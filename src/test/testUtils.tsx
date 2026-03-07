@@ -18,7 +18,7 @@ interface ExtendedRenderOptions extends Omit<RenderOptions, 'queries'> {
   preloadedState?: Partial<RootState>
 }
 
-function createTestStore(preloadedState?: Partial<RootState>) {
+export function createTestStore(preloadedState?: Partial<RootState>) {
   return configureStore({
     reducer: {
       cart: cartReducer,
