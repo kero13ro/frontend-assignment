@@ -4,6 +4,7 @@ import {
   addToCart,
   incrementQuantity,
   decrementQuantity,
+  removeFromCart,
   clearCart,
   selectCartItems,
   selectCartTotal,
@@ -33,6 +34,11 @@ export function useCart() {
     [dispatch]
   )
 
+  const removeItem = useCallback(
+    (id: string) => dispatch(removeFromCart(id)),
+    [dispatch]
+  )
+
   const submitOrder = useCallback(() => {
     if (items.length === 0) return null
 
@@ -48,5 +54,5 @@ export function useCart() {
     return order
   }, [dispatch, items, total])
 
-  return { items, total, itemCount, addItem, increment, decrement, submitOrder }
+  return { items, total, itemCount, addItem, increment, decrement, removeItem, submitOrder }
 }

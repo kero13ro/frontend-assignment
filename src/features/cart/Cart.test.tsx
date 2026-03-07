@@ -69,6 +69,16 @@ describe('Cart', () => {
     expect(screen.queryByText('Test Fries')).not.toBeInTheDocument()
   })
 
+  it('should remove item when clicking remove button', async () => {
+    const user = userEvent.setup()
+    renderWithProviders(<Cart />, { preloadedState: stateWithItems })
+
+    await user.click(screen.getByRole('button', { name: /remove test burger/i }))
+    expect(screen.queryByText('Test Burger')).not.toBeInTheDocument()
+    expect(screen.getByText('Test Fries')).toBeInTheDocument()
+    expect(screen.getByText('Total: $3.99')).toBeInTheDocument()
+  })
+
   it('should submit order and clear cart', async () => {
     const user = userEvent.setup()
     renderWithProviders(<Cart />, { preloadedState: stateWithItems })

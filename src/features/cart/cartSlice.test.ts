@@ -3,6 +3,7 @@ import cartReducer, {
   addToCart,
   incrementQuantity,
   decrementQuantity,
+  removeFromCart,
   clearCart,
 } from './cartSlice'
 import type { MenuItem } from '../../types'
@@ -57,6 +58,21 @@ describe('cartSlice', () => {
     let state = cartReducer(undefined, addToCart(mockItem))
     state = cartReducer(state, decrementQuantity(mockItem.id))
     expect(state.items).toHaveLength(0)
+  })
+
+  it('should remove item regardless of quantity', () => {
+    let state = cartReducer(undefined, addToCart(mockItem))
+    state = cartReducer(state, incrementQuantity(mockItem.id))
+    state = cartReducer(state, incrementQuantity(mockItem.id))
+    // quantity is 3
+    state = cartReducer(state, removeFromCart(mockItem.id))
+    expect(state.items).toHaveLength(0)
+  })
+
+  it('should not change state when removing non-existent item', () => {
+    let state = cartReducer(undefined, addToCart(mockItem))
+    state = cartReducer(state, removeFromCart('non-existent'))
+    expect(state.items).toHaveLength(1)
   })
 
   it('should clear all items', () => {

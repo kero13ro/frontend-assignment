@@ -9,7 +9,7 @@ import {
   ListItemText,
   Typography,
 } from '@mui/material'
-import { Add, Remove } from '@mui/icons-material'
+import { Add, Delete, Remove } from '@mui/icons-material'
 import { useCart } from './useCart'
 import { useNotification } from '../../components/useNotification'
 import type { CartItem } from '../../types'
@@ -18,12 +18,14 @@ interface CartLineItemProps {
   item: CartItem
   onIncrement: (id: string) => void
   onDecrement: (id: string) => void
+  onRemove: (id: string) => void
 }
 
 const CartLineItem = memo(function CartLineItem({
   item,
   onIncrement,
   onDecrement,
+  onRemove,
 }: CartLineItemProps) {
   return (
     <ListItem
@@ -46,6 +48,14 @@ const CartLineItem = memo(function CartLineItem({
           >
             <Add />
           </IconButton>
+          <IconButton
+            aria-label={`Remove ${item.menuItem.name}`}
+            onClick={() => onRemove(item.menuItem.id)}
+            size="small"
+            edge="end"
+          >
+            <Delete />
+          </IconButton>
         </Box>
       }
     >
@@ -58,7 +68,7 @@ const CartLineItem = memo(function CartLineItem({
 })
 
 export function Cart() {
-  const { items, total, increment, decrement, submitOrder } = useCart()
+  const { items, total, increment, decrement, removeItem, submitOrder } = useCart()
   const { showNotification } = useNotification()
 
   const handleSubmitOrder = useCallback(() => {
@@ -88,6 +98,7 @@ export function Cart() {
             item={item}
             onIncrement={increment}
             onDecrement={decrement}
+            onRemove={removeItem}
           />
         ))}
       </List>

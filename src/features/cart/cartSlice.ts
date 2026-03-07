@@ -43,6 +43,14 @@ export const cartSlice = createSlice({
         }
       }
     },
+    removeFromCart(state, action: PayloadAction<string>) {
+      const index = state.items.findIndex(
+        (item) => item.menuItem.id === action.payload
+      )
+      if (index !== -1) {
+        state.items.splice(index, 1)
+      }
+    },
     clearCart(state) {
       state.items = []
     },
@@ -52,7 +60,7 @@ export const cartSlice = createSlice({
   },
 })
 
-export const { addToCart, incrementQuantity, decrementQuantity, clearCart } =
+export const { addToCart, incrementQuantity, decrementQuantity, removeFromCart, clearCart } =
   cartSlice.actions
 export const { selectCartItems } = cartSlice.selectors
 
