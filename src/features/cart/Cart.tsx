@@ -25,7 +25,7 @@ export function Cart() {
 
   if (items.length === 0) {
     return (
-      <Typography color="text.secondary" sx={{ textAlign: 'center', mt: 4 }}>
+      <Typography color="text.secondary" sx={{ textAlign: 'center', mt: 4 }} role="status">
         Your cart is empty. Add some items from the menu!
       </Typography>
     )
@@ -77,7 +77,7 @@ export function Cart() {
           alignItems: 'center',
         }}
       >
-        <Typography variant="h6">Total: ${total.toFixed(2)}</Typography>
+        <Typography variant="h6" aria-live="polite">Total: ${total.toFixed(2)}</Typography>
         <Button variant="contained" size="large" onClick={handleSubmitOrder}>
           Submit Order
         </Button>

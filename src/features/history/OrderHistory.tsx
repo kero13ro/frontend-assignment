@@ -23,7 +23,7 @@ export function OrderHistory() {
 
   if (orders.length === 0) {
     return (
-      <Typography color="text.secondary" sx={{ textAlign: 'center', mt: 4 }}>
+      <Typography color="text.secondary" sx={{ textAlign: 'center', mt: 4 }} role="status">
         No order history yet. Submit an order to see it here!
       </Typography>
     )
@@ -44,6 +44,7 @@ export function OrderHistory() {
           color="error"
           startIcon={<Delete />}
           onClick={() => setConfirmOpen(true)}
+          aria-label="Clear all order history"
         >
           Clear History
         </Button>

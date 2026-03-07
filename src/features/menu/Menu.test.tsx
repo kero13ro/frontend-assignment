@@ -24,7 +24,7 @@ describe('Menu', () => {
 
   it('should render an Add to Cart button for each item', () => {
     renderWithProviders(<Menu />)
-    const buttons = screen.getAllByRole('button', { name: /add to cart/i })
+    const buttons = screen.getAllByRole('button', { name: /add.*to cart/i })
     expect(buttons).toHaveLength(9)
   })
 
@@ -32,7 +32,7 @@ describe('Menu', () => {
     const user = userEvent.setup()
     const { store } = renderWithProviders(<Menu />)
 
-    const buttons = screen.getAllByRole('button', { name: /add to cart/i })
+    const buttons = screen.getAllByRole('button', { name: /add.*to cart/i })
     await user.click(buttons[0])
 
     const state = store.getState()
@@ -45,7 +45,7 @@ describe('Menu', () => {
     const user = userEvent.setup()
     const { store } = renderWithProviders(<Menu />)
 
-    const buttons = screen.getAllByRole('button', { name: /add to cart/i })
+    const buttons = screen.getAllByRole('button', { name: /add.*to cart/i })
     await user.click(buttons[0])
     await user.click(buttons[0])
 

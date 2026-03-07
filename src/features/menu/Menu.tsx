@@ -24,7 +24,7 @@ export function Menu() {
   return (
     <Box>
       {categories.map((category) => (
-        <Box key={category} sx={{ mb: 4 }}>
+        <Box key={category} sx={{ mb: 4 }} role="region" aria-label={`${category} category`}>
           <Typography variant="h5" sx={{ mb: 2 }}>
             {category}
           </Typography>
@@ -44,6 +44,7 @@ export function Menu() {
                       size="small"
                       startIcon={<Add />}
                       onClick={() => handleAddToCart(item)}
+                      aria-label={`Add ${item.name} to cart`}
                     >
                       Add to Cart
                     </Button>
