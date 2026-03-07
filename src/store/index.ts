@@ -11,8 +11,10 @@ export const store = configureStore({
   preloadedState: loadState() as undefined,
 })
 
+let saveTimeoutId: ReturnType<typeof setTimeout>
 store.subscribe(() => {
-  saveState(store.getState())
+  clearTimeout(saveTimeoutId)
+  saveTimeoutId = setTimeout(() => saveState(store.getState()), 300)
 })
 
 export type RootState = ReturnType<typeof store.getState>

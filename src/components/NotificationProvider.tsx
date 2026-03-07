@@ -4,28 +4,36 @@ import { NotificationContext } from './useNotification'
 
 type Severity = 'success' | 'info' | 'warning' | 'error'
 
-export function NotificationProvider({ children }: { children: React.ReactNode }) {
-  const [open, setOpen] = useState(false)
-  const [message, setMessage] = useState('')
-  const [severity, setSeverity] = useState<Severity>('success')
+interface NotificationState {
+  open: boolean
+  message: string
+  severity: Severity
+}
 
-  const showNotification = useCallback((msg: string, sev: Severity = 'success') => {
-    setMessage(msg)
-    setSeverity(sev)
-    setOpen(true)
+const initialState: NotificationState = { open: false, message: '', severity: 'success' }
+
+export function NotificationProvider({ children }: { children: React.ReactNode }) {
+  const [notification, setNotification] = useState<NotificationState>(initialState)
+
+  const showNotification = useCallback((message: string, severity: Severity = 'success') => {
+    setNotification({ open: true, message, severity })
+  }, [])
+
+  const handleClose = useCallback(() => {
+    setNotification((prev) => ({ ...prev, open: false }))
   }, [])
 
   return (
     <NotificationContext.Provider value={{ showNotification }}>
       {children}
       <Snackbar
-        open={open}
+        open={notification.open}
         autoHideDuration={3000}
-        onClose={() => setOpen(false)}
+        onClose={handleClose}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
       >
-        <Alert onClose={() => setOpen(false)} severity={severity} variant="filled">
-          {message}
+        <Alert onClose={handleClose} severity={notification.severity} variant="filled">
+          {notification.message}
         </Alert>
       </Snackbar>
     </NotificationContext.Provider>

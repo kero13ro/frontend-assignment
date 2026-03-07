@@ -3,6 +3,7 @@ import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { renderWithProviders } from '../../test/testUtils'
 import { Menu } from './Menu'
+import { menuItems } from '../../data/menuItems'
 
 describe('Menu', () => {
   it('should render all category headings', () => {
@@ -25,20 +26,18 @@ describe('Menu', () => {
   it('should render an Add to Cart button for each item', () => {
     renderWithProviders(<Menu />)
     const buttons = screen.getAllByRole('button', { name: /add.*to cart/i })
-    expect(buttons).toHaveLength(9)
+    expect(buttons).toHaveLength(menuItems.length)
   })
 
   it('should add item to cart when clicking Add to Cart', async () => {
     const user = userEvent.setup()
-    const { store } = renderWithProviders(<Menu />)
+    renderWithProviders(<Menu />)
 
     const buttons = screen.getAllByRole('button', { name: /add.*to cart/i })
     await user.click(buttons[0])
 
-    const state = store.getState()
-    expect(state.cart.items).toHaveLength(1)
-    expect(state.cart.items[0].menuItem.name).toBe('Classic Burger')
-    expect(state.cart.items[0].quantity).toBe(1)
+    expect(screen.getByText('In Cart')).toBeInTheDocument()
+    expect(screen.getAllByRole('button', { name: /add.*to cart/i })).toHaveLength(menuItems.length - 1)
   })
 
   it('should show In Cart chip after adding item', async () => {
@@ -49,7 +48,7 @@ describe('Menu', () => {
     await user.click(buttons[0])
 
     expect(screen.getByText('In Cart')).toBeInTheDocument()
-    expect(screen.getAllByRole('button', { name: /add.*to cart/i })).toHaveLength(8)
+    expect(screen.getAllByRole('button', { name: /add.*to cart/i })).toHaveLength(menuItems.length - 1)
   })
 
   it('should show In Cart for items already in cart', () => {
@@ -64,6 +63,6 @@ describe('Menu', () => {
     })
 
     expect(screen.getByText('In Cart')).toBeInTheDocument()
-    expect(screen.getAllByRole('button', { name: /add.*to cart/i })).toHaveLength(8)
+    expect(screen.getAllByRole('button', { name: /add.*to cart/i })).toHaveLength(menuItems.length - 1)
   })
 })

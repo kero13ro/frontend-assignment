@@ -1,4 +1,4 @@
-import { memo, useCallback } from 'react'
+import { memo, useCallback, useMemo } from 'react'
 import {
   Button,
   Card,
@@ -51,7 +51,7 @@ export function Menu() {
   const { items, addItem } = useCart()
   const { showNotification } = useNotification()
 
-  const cartItemIds = new Set(items.map((ci) => ci.menuItem.id))
+  const cartItemIds = useMemo(() => new Set(items.map((ci) => ci.menuItem.id)), [items])
 
   const handleAddToCart = useCallback(
     (item: MenuItem) => {
