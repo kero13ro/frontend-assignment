@@ -9,37 +9,18 @@ import {
   Typography,
 } from '@mui/material'
 import { Add, Remove } from '@mui/icons-material'
-import { useAppDispatch, useAppSelector } from '../../store/hooks'
-import {
-  selectCartItems,
-  selectCartTotal,
-  incrementQuantity,
-  decrementQuantity,
-  clearCart,
-} from './cartSlice'
-import { addOrder } from '../history/historySlice'
+import { useCart } from './useCart'
 import { useNotification } from '../../components/NotificationProvider'
-import type { Order } from '../../types'
 
 export function Cart() {
-  const dispatch = useAppDispatch()
-  const items = useAppSelector(selectCartItems)
-  const total = useAppSelector(selectCartTotal)
+  const { items, total, increment, decrement, submitOrder } = useCart()
   const { showNotification } = useNotification()
 
   const handleSubmitOrder = () => {
-    if (items.length === 0) return
-
-    const order: Order = {
-      id: crypto.randomUUID(),
-      items: items.map((item) => ({ ...item })),
-      totalAmount: total,
-      submittedAt: new Date().toISOString(),
+    const order = submitOrder()
+    if (order) {
+      showNotification('Order submitted successfully!', 'success')
     }
-
-    dispatch(addOrder(order))
-    dispatch(clearCart())
-    showNotification('Order submitted successfully!', 'success')
   }
 
   if (items.length === 0) {
@@ -63,7 +44,7 @@ export function Cart() {
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                 <IconButton
                   aria-label={`Decrease ${item.menuItem.name}`}
-                  onClick={() => dispatch(decrementQuantity(item.menuItem.id))}
+                  onClick={() => decrement(item.menuItem.id)}
                   size="small"
                 >
                   <Remove />
@@ -73,7 +54,7 @@ export function Cart() {
                 </Typography>
                 <IconButton
                   aria-label={`Increase ${item.menuItem.name}`}
-                  onClick={() => dispatch(incrementQuantity(item.menuItem.id))}
+                  onClick={() => increment(item.menuItem.id)}
                   size="small"
                 >
                   <Add />

@@ -14,6 +14,7 @@ import { Menu } from './features/menu/Menu'
 import { Cart } from './features/cart/Cart'
 import { OrderHistory } from './features/history/OrderHistory'
 import { NotificationProvider } from './components/NotificationProvider'
+import { ErrorBoundary } from './components/ErrorBoundary'
 import { useAppSelector } from './store/hooks'
 import { selectCartItemCount } from './features/cart/cartSlice'
 
@@ -49,11 +50,13 @@ export function App() {
         </Tabs>
       </AppBar>
       <NotificationProvider>
-        <Container maxWidth="md" sx={{ py: 3, flex: 1 }}>
-          {tab === 0 && <Menu />}
-          {tab === 1 && <Cart />}
-          {tab === 2 && <OrderHistory />}
-        </Container>
+        <ErrorBoundary>
+          <Container maxWidth="md" sx={{ py: 3, flex: 1 }}>
+            {tab === 0 && <Menu />}
+            {tab === 1 && <Cart />}
+            {tab === 2 && <OrderHistory />}
+          </Container>
+        </ErrorBoundary>
       </NotificationProvider>
     </Box>
   )
