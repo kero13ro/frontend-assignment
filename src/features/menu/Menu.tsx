@@ -1,3 +1,4 @@
+import { memo, useCallback } from 'react'
 import {
   Button,
   Card,
@@ -12,14 +13,45 @@ import { useCart } from '../cart/useCart'
 import { useNotification } from '../../components/NotificationProvider'
 import type { MenuItem } from '../../types'
 
+interface MenuItemCardProps {
+  item: MenuItem
+  onAddToCart: (item: MenuItem) => void
+}
+
+const MenuItemCard = memo(function MenuItemCard({ item, onAddToCart }: MenuItemCardProps) {
+  return (
+    <Card sx={{ width: 220 }}>
+      <CardContent>
+        <Typography variant="h6">{item.name}</Typography>
+        <Typography color="text.secondary">
+          ${item.price.toFixed(2)}
+        </Typography>
+      </CardContent>
+      <CardActions>
+        <Button
+          size="small"
+          startIcon={<Add />}
+          onClick={() => onAddToCart(item)}
+          aria-label={`Add ${item.name} to cart`}
+        >
+          Add to Cart
+        </Button>
+      </CardActions>
+    </Card>
+  )
+})
+
 export function Menu() {
   const { addItem } = useCart()
   const { showNotification } = useNotification()
 
-  const handleAddToCart = (item: MenuItem) => {
-    addItem(item)
-    showNotification(`Added ${item.name} to cart`, 'success')
-  }
+  const handleAddToCart = useCallback(
+    (item: MenuItem) => {
+      addItem(item)
+      showNotification(`Added ${item.name} to cart`, 'success')
+    },
+    [addItem, showNotification]
+  )
 
   return (
     <Box>
@@ -32,24 +64,11 @@ export function Menu() {
             {menuItems
               .filter((item) => item.category === category)
               .map((item) => (
-                <Card key={item.id} sx={{ width: 220 }}>
-                  <CardContent>
-                    <Typography variant="h6">{item.name}</Typography>
-                    <Typography color="text.secondary">
-                      ${item.price.toFixed(2)}
-                    </Typography>
-                  </CardContent>
-                  <CardActions>
-                    <Button
-                      size="small"
-                      startIcon={<Add />}
-                      onClick={() => handleAddToCart(item)}
-                      aria-label={`Add ${item.name} to cart`}
-                    >
-                      Add to Cart
-                    </Button>
-                  </CardActions>
-                </Card>
+                <MenuItemCard
+                  key={item.id}
+                  item={item}
+                  onAddToCart={handleAddToCart}
+                />
               ))}
           </Box>
         </Box>

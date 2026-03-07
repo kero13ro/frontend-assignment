@@ -1,4 +1,4 @@
-import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
+import { createSelector, createSlice, type PayloadAction } from '@reduxjs/toolkit'
 import type { CartItem, MenuItem } from '../../types'
 
 interface CartState {
@@ -49,18 +49,19 @@ export const cartSlice = createSlice({
   },
   selectors: {
     selectCartItems: (state) => state.items,
-    selectCartTotal: (state) =>
-      state.items.reduce(
-        (total, item) => total + item.menuItem.price * item.quantity,
-        0
-      ),
-    selectCartItemCount: (state) =>
-      state.items.reduce((count, item) => count + item.quantity, 0),
   },
 })
 
 export const { addToCart, incrementQuantity, decrementQuantity, clearCart } =
   cartSlice.actions
-export const { selectCartItems, selectCartTotal, selectCartItemCount } =
-  cartSlice.selectors
+export const { selectCartItems } = cartSlice.selectors
+
+export const selectCartTotal = createSelector(selectCartItems, (items) =>
+  items.reduce((total, item) => total + item.menuItem.price * item.quantity, 0)
+)
+
+export const selectCartItemCount = createSelector(selectCartItems, (items) =>
+  items.reduce((count, item) => count + item.quantity, 0)
+)
+
 export default cartSlice.reducer

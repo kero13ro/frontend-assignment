@@ -1,3 +1,4 @@
+import { memo, useCallback } from 'react'
 import {
   Box,
   Button,
@@ -11,17 +12,61 @@ import {
 import { Add, Remove } from '@mui/icons-material'
 import { useCart } from './useCart'
 import { useNotification } from '../../components/NotificationProvider'
+import type { CartItem } from '../../types'
+
+interface CartLineItemProps {
+  item: CartItem
+  onIncrement: (id: string) => void
+  onDecrement: (id: string) => void
+}
+
+const CartLineItem = memo(function CartLineItem({
+  item,
+  onIncrement,
+  onDecrement,
+}: CartLineItemProps) {
+  return (
+    <ListItem
+      secondaryAction={
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          <IconButton
+            aria-label={`Decrease ${item.menuItem.name}`}
+            onClick={() => onDecrement(item.menuItem.id)}
+            size="small"
+          >
+            <Remove />
+          </IconButton>
+          <Typography sx={{ minWidth: 24, textAlign: 'center' }}>
+            {item.quantity}
+          </Typography>
+          <IconButton
+            aria-label={`Increase ${item.menuItem.name}`}
+            onClick={() => onIncrement(item.menuItem.id)}
+            size="small"
+          >
+            <Add />
+          </IconButton>
+        </Box>
+      }
+    >
+      <ListItemText
+        primary={item.menuItem.name}
+        secondary={`$${item.menuItem.price.toFixed(2)} each`}
+      />
+    </ListItem>
+  )
+})
 
 export function Cart() {
   const { items, total, increment, decrement, submitOrder } = useCart()
   const { showNotification } = useNotification()
 
-  const handleSubmitOrder = () => {
+  const handleSubmitOrder = useCallback(() => {
     const order = submitOrder()
     if (order) {
       showNotification('Order submitted successfully!', 'success')
     }
-  }
+  }, [submitOrder, showNotification])
 
   if (items.length === 0) {
     return (
@@ -38,35 +83,12 @@ export function Cart() {
       </Typography>
       <List>
         {items.map((item) => (
-          <ListItem
+          <CartLineItem
             key={item.menuItem.id}
-            secondaryAction={
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                <IconButton
-                  aria-label={`Decrease ${item.menuItem.name}`}
-                  onClick={() => decrement(item.menuItem.id)}
-                  size="small"
-                >
-                  <Remove />
-                </IconButton>
-                <Typography sx={{ minWidth: 24, textAlign: 'center' }}>
-                  {item.quantity}
-                </Typography>
-                <IconButton
-                  aria-label={`Increase ${item.menuItem.name}`}
-                  onClick={() => increment(item.menuItem.id)}
-                  size="small"
-                >
-                  <Add />
-                </IconButton>
-              </Box>
-            }
-          >
-            <ListItemText
-              primary={item.menuItem.name}
-              secondary={`$${item.menuItem.price.toFixed(2)} each`}
-            />
-          </ListItem>
+            item={item}
+            onIncrement={increment}
+            onDecrement={decrement}
+          />
         ))}
       </List>
       <Divider sx={{ my: 2 }} />
