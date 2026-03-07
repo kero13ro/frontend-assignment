@@ -2,6 +2,7 @@ import { describe, it, expect } from 'vitest'
 import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { renderWithRouter } from './test/testUtils'
+import { createMockCartItem } from './test/factories'
 import type { RootState } from './store'
 
 describe('App', () => {
@@ -44,7 +45,7 @@ describe('App', () => {
     const stateWithCart: Partial<RootState> = {
       cart: {
         items: [
-          { menuItem: { id: 't-1', name: 'Burger', price: 9.99, category: 'Fast Food' }, quantity: 3 },
+          createMockCartItem({ menuItem: { id: 't-1', name: 'Burger', price: 9.99, category: 'Fast Food' }, quantity: 3 }),
         ],
       },
     }

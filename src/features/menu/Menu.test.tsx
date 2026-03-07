@@ -2,6 +2,7 @@ import { describe, it, expect } from 'vitest'
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { renderWithProviders } from '../../test/testUtils'
+import { createMockCartItem } from '../../test/factories'
 import { Menu } from './Menu'
 import { menuItems } from '../../data/menuItems'
 
@@ -56,7 +57,7 @@ describe('Menu', () => {
       preloadedState: {
         cart: {
           items: [
-            { menuItem: { id: 'ff-1', name: 'Classic Burger', price: 8.99, category: 'Fast Food' }, quantity: 1 },
+            createMockCartItem({ menuItem: { id: 'ff-1', name: 'Classic Burger', price: 8.99, category: 'Fast Food' } }),
           ],
         },
       },

@@ -18,9 +18,7 @@ import { selectCartItemCount } from '../features/cart/cartSlice'
 import { useThemeMode } from '../useThemeMode'
 
 const tabToPath = ['/', '/cart', '/history'] as const
-const pathToTab = Object.fromEntries(
-  tabToPath.map((path, index) => [path, index]),
-) as Record<string, number>
+const pathToTab: Record<string, number> = { '/': 0, '/cart': 1, '/history': 2 }
 
 export function RootLayout() {
   const cartItemCount = useAppSelector(selectCartItemCount)

@@ -1,8 +1,6 @@
 import { useCallback, useState } from 'react'
 import { Alert, Snackbar } from '@mui/material'
-import { NotificationContext } from './useNotification'
-
-type Severity = 'success' | 'info' | 'warning' | 'error'
+import { NotificationContext, type Severity } from './useNotification'
 
 interface NotificationState {
   open: boolean

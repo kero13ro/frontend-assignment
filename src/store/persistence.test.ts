@@ -1,22 +1,22 @@
 import { describe, it, expect, beforeEach } from 'vitest'
 import { loadState, saveState } from './persistence'
+import { createMockCartItem, createMockOrder } from '../test/factories'
 
 const mockState = {
   cart: {
     items: [
-      { menuItem: { id: 'test-1', name: 'Burger', price: 9.99, category: 'Fast Food' }, quantity: 2 },
+      createMockCartItem({ menuItem: { id: 'test-1', name: 'Burger', price: 9.99, category: 'Fast Food' }, quantity: 2 }),
     ],
   },
   history: {
     orders: [
-      {
+      createMockOrder({
         id: 'order-1',
         items: [
-          { menuItem: { id: 'test-1', name: 'Burger', price: 9.99, category: 'Fast Food' }, quantity: 1 },
+          createMockCartItem({ menuItem: { id: 'test-1', name: 'Burger', price: 9.99, category: 'Fast Food' }, quantity: 1 }),
         ],
         totalAmount: 9.99,
-        submittedAt: '2026-03-07T12:00:00.000Z',
-      },
+      }),
     ],
   },
 }

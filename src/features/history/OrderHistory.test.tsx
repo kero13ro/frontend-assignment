@@ -2,29 +2,30 @@ import { describe, it, expect } from 'vitest'
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { renderWithProviders } from '../../test/testUtils'
+import { createMockCartItem, createMockOrder } from '../../test/factories'
 import { OrderHistory } from './OrderHistory'
 import type { RootState } from '../../store'
 
 const stateWithOrders: Partial<RootState> = {
   history: {
     orders: [
-      {
+      createMockOrder({
         id: 'order-2',
         items: [
-          { menuItem: { id: 'item-1', name: 'Ramen', price: 12.99, category: 'Asian' }, quantity: 1 },
+          createMockCartItem({ menuItem: { id: 'item-1', name: 'Ramen', price: 12.99, category: 'Asian' }, quantity: 1 }),
         ],
         totalAmount: 12.99,
         submittedAt: '2026-03-07T13:00:00.000Z',
-      },
-      {
+      }),
+      createMockOrder({
         id: 'order-1',
         items: [
-          { menuItem: { id: 'item-2', name: 'Classic Burger', price: 8.99, category: 'Fast Food' }, quantity: 2 },
-          { menuItem: { id: 'item-3', name: 'French Fries', price: 3.99, category: 'Fast Food' }, quantity: 1 },
+          createMockCartItem({ menuItem: { id: 'item-2', name: 'Classic Burger', price: 8.99, category: 'Fast Food' }, quantity: 2 }),
+          createMockCartItem({ menuItem: { id: 'item-3', name: 'French Fries', price: 3.99, category: 'Fast Food' }, quantity: 1 }),
         ],
         totalAmount: 21.97,
         submittedAt: '2026-03-07T12:00:00.000Z',
-      },
+      }),
     ],
   },
 }

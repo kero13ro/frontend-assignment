@@ -1,6 +1,6 @@
 import { createContext, useContext } from 'react'
 
-type Severity = 'success' | 'info' | 'warning' | 'error'
+export type Severity = 'success' | 'info' | 'warning' | 'error'
 
 export interface NotificationContextValue {
   showNotification: (message: string, severity?: Severity) => void

@@ -1,9 +1,7 @@
 import { useMemo, useState } from 'react'
 import type { ReactNode } from 'react'
 import { CssBaseline, ThemeProvider, createTheme } from '@mui/material'
-import { ThemeModeContext } from './useThemeMode'
-
-type ThemeMode = 'light' | 'dark'
+import { ThemeModeContext, type ThemeMode } from './useThemeMode'
 
 function loadThemeMode(): ThemeMode {
   try {

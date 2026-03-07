@@ -2,20 +2,21 @@ import { describe, it, expect } from 'vitest'
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { renderWithProviders } from '../../test/testUtils'
+import { createMockCartItem } from '../../test/factories'
 import { Cart } from './Cart'
 import type { RootState } from '../../store'
 
 const stateWithItems: Partial<RootState> = {
   cart: {
     items: [
-      {
+      createMockCartItem({
         menuItem: { id: 'test-1', name: 'Test Burger', price: 9.99, category: 'Fast Food' },
         quantity: 2,
-      },
-      {
+      }),
+      createMockCartItem({
         menuItem: { id: 'test-2', name: 'Test Fries', price: 3.99, category: 'Fast Food' },
         quantity: 1,
-      },
+      }),
     ],
   },
 }
