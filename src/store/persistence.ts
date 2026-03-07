@@ -1,8 +1,6 @@
-import type { RootState } from '.'
-
 const STORAGE_KEY = 'foodOrderState'
 
-export function loadState(): Partial<RootState> | undefined {
+export function loadState(): Record<string, unknown> | undefined {
   try {
     const serialized = localStorage.getItem(STORAGE_KEY)
     if (!serialized) return undefined
@@ -12,12 +10,9 @@ export function loadState(): Partial<RootState> | undefined {
   }
 }
 
-export function saveState(state: RootState): void {
+export function saveState(state: Record<string, unknown>): void {
   try {
-    const serialized = JSON.stringify({
-      cart: state.cart,
-      history: state.history,
-    })
+    const serialized = JSON.stringify(state)
     localStorage.setItem(STORAGE_KEY, serialized)
   } catch {
     // Silently fail on storage errors (quota exceeded, etc.)

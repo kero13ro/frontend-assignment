@@ -1,8 +1,7 @@
 import { describe, it, expect, beforeEach } from 'vitest'
 import { loadState, saveState } from './persistence'
-import type { RootState } from '.'
 
-const mockState: RootState = {
+const mockState = {
   cart: {
     items: [
       { menuItem: { id: 'test-1', name: 'Burger', price: 9.99, category: 'Fast Food' }, quantity: 2 },
@@ -49,10 +48,7 @@ describe('persistence', () => {
       saveState(mockState)
       const stored = localStorage.getItem('foodOrderState')
       expect(stored).not.toBeNull()
-      expect(JSON.parse(stored!)).toEqual({
-        cart: mockState.cart,
-        history: mockState.history,
-      })
+      expect(JSON.parse(stored!)).toEqual(mockState)
     })
   })
 })

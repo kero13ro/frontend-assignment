@@ -10,7 +10,7 @@ import {
 import { Add } from '@mui/icons-material'
 import { menuItems, categories } from '../../data/menuItems'
 import { useCart } from '../cart/useCart'
-import { useNotification } from '../../components/NotificationProvider'
+import { useNotification } from '../../components/useNotification'
 import type { MenuItem } from '../../types'
 
 interface MenuItemCardProps {

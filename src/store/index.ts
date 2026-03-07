@@ -8,7 +8,7 @@ export const store = configureStore({
     cart: cartReducer,
     history: historyReducer,
   },
-  preloadedState: loadState(),
+  preloadedState: loadState() as undefined,
 })
 
 store.subscribe(() => {

@@ -1,21 +1,8 @@
-import { createContext, useCallback, useContext, useState } from 'react'
+import { useCallback, useState } from 'react'
 import { Alert, Snackbar } from '@mui/material'
+import { NotificationContext } from './useNotification'
 
 type Severity = 'success' | 'info' | 'warning' | 'error'
-
-interface NotificationContextValue {
-  showNotification: (message: string, severity?: Severity) => void
-}
-
-const NotificationContext = createContext<NotificationContextValue | null>(null)
-
-export function useNotification() {
-  const context = useContext(NotificationContext)
-  if (!context) {
-    throw new Error('useNotification must be used within NotificationProvider')
-  }
-  return context
-}
 
 export function NotificationProvider({ children }: { children: React.ReactNode }) {
   const [open, setOpen] = useState(false)

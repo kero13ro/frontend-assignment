@@ -11,7 +11,7 @@ import {
 } from '@mui/material'
 import { Add, Remove } from '@mui/icons-material'
 import { useCart } from './useCart'
-import { useNotification } from '../../components/NotificationProvider'
+import { useNotification } from '../../components/useNotification'
 import type { CartItem } from '../../types'
 
 interface CartLineItemProps {
