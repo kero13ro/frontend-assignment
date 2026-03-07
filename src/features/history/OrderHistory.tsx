@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import {
   Box,
   Button,
@@ -8,10 +9,17 @@ import {
 import { Delete } from '@mui/icons-material'
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
 import { selectOrders, clearHistory } from './historySlice'
+import { ConfirmDialog } from '../../components/ConfirmDialog'
 
 export function OrderHistory() {
   const dispatch = useAppDispatch()
   const orders = useAppSelector(selectOrders)
+  const [confirmOpen, setConfirmOpen] = useState(false)
+
+  const handleClearHistory = () => {
+    dispatch(clearHistory())
+    setConfirmOpen(false)
+  }
 
   if (orders.length === 0) {
     return (
@@ -35,7 +43,7 @@ export function OrderHistory() {
         <Button
           color="error"
           startIcon={<Delete />}
-          onClick={() => dispatch(clearHistory())}
+          onClick={() => setConfirmOpen(true)}
         >
           Clear History
         </Button>
@@ -61,6 +69,13 @@ export function OrderHistory() {
           </Card>
         ))}
       </Box>
+      <ConfirmDialog
+        open={confirmOpen}
+        title="Clear Order History"
+        message="Are you sure you want to clear all order history? This action cannot be undone."
+        onConfirm={handleClearHistory}
+        onCancel={() => setConfirmOpen(false)}
+      />
     </Box>
   )
 }

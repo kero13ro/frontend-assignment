@@ -54,12 +54,30 @@ describe('OrderHistory', () => {
     expect(screen.getByRole('button', { name: /clear history/i })).toBeInTheDocument()
   })
 
-  it('should clear all orders when clicking Clear History', async () => {
+  it('should show confirmation dialog when clicking Clear History', async () => {
+    const user = userEvent.setup()
+    renderWithProviders(<OrderHistory />, { preloadedState: stateWithOrders })
+
+    await user.click(screen.getByRole('button', { name: /clear history/i }))
+    expect(screen.getByText(/are you sure/i)).toBeInTheDocument()
+  })
+
+  it('should clear all orders after confirming', async () => {
     const user = userEvent.setup()
     const { store } = renderWithProviders(<OrderHistory />, { preloadedState: stateWithOrders })
 
     await user.click(screen.getByRole('button', { name: /clear history/i }))
+    await user.click(screen.getByRole('button', { name: /confirm/i }))
     expect(store.getState().history.orders).toHaveLength(0)
     expect(screen.getByText(/no order history yet/i)).toBeInTheDocument()
+  })
+
+  it('should not clear orders when cancelling', async () => {
+    const user = userEvent.setup()
+    const { store } = renderWithProviders(<OrderHistory />, { preloadedState: stateWithOrders })
+
+    await user.click(screen.getByRole('button', { name: /clear history/i }))
+    await user.click(screen.getByRole('button', { name: /cancel/i }))
+    expect(store.getState().history.orders).toHaveLength(2)
   })
 })
