@@ -4,16 +4,18 @@ import {
   Badge,
   Box,
   Container,
+  IconButton,
   Tab,
   Tabs,
   Toolbar,
   Typography,
 } from '@mui/material'
-import { RestaurantMenu, ShoppingCart, History } from '@mui/icons-material'
+import { RestaurantMenu, ShoppingCart, History, DarkMode, LightMode } from '@mui/icons-material'
 import { NotificationProvider } from './NotificationProvider'
 import { ErrorBoundary } from './ErrorBoundary'
 import { useAppSelector } from '../store/hooks'
 import { selectCartItemCount } from '../features/cart/cartSlice'
+import { useThemeMode } from '../useThemeMode'
 
 const tabToPath = ['/', '/cart', '/history'] as const
 const pathToTab = Object.fromEntries(
@@ -22,6 +24,7 @@ const pathToTab = Object.fromEntries(
 
 export function RootLayout() {
   const cartItemCount = useAppSelector(selectCartItemCount)
+  const { mode, toggleTheme } = useThemeMode()
   const navigate = useNavigate()
   const { pathname } = useLocation()
   const currentTab = pathToTab[pathname] ?? 0
@@ -34,16 +37,19 @@ export function RootLayout() {
     <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
       <AppBar position="static">
         <Toolbar>
-          <Typography variant="h6" sx={{ flexGrow: 1 }}>
+          <Typography variant="h6" sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}>
             Food Order System
           </Typography>
+          <IconButton color="inherit" onClick={toggleTheme} aria-label="Toggle dark mode">
+            {mode === 'light' ? <DarkMode /> : <LightMode />}
+          </IconButton>
         </Toolbar>
         <Tabs
           value={currentTab}
           onChange={handleTabChange}
           textColor="inherit"
           indicatorColor="secondary"
-          centered
+          variant="fullWidth"
         >
           <Tab icon={<RestaurantMenu />} label="Menu" />
           <Tab
@@ -59,7 +65,7 @@ export function RootLayout() {
       </AppBar>
       <NotificationProvider>
         <ErrorBoundary>
-          <Container maxWidth="md" sx={{ py: 3, flex: 1 }}>
+          <Container maxWidth="md" sx={{ py: { xs: 2, sm: 3 }, flex: 1 }}>
             <Outlet />
           </Container>
         </ErrorBoundary>

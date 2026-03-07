@@ -10,6 +10,7 @@ import {
 import cartReducer from '../features/cart/cartSlice'
 import historyReducer from '../features/history/historySlice'
 import { NotificationProvider } from '../components/NotificationProvider'
+import { AppThemeProvider } from '../theme'
 import { routeTree } from '../router'
 import type { RootState } from '../store'
 
@@ -64,7 +65,9 @@ export function renderWithRouter({
     store,
     ...render(
       <Provider store={store}>
-        <RouterProvider router={testRouter} />
+        <AppThemeProvider>
+          <RouterProvider router={testRouter} />
+        </AppThemeProvider>
       </Provider>
     ),
   }
