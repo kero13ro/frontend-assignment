@@ -18,12 +18,14 @@ import {
   clearCart,
 } from './cartSlice'
 import { addOrder } from '../history/historySlice'
+import { useNotification } from '../../components/NotificationProvider'
 import type { Order } from '../../types'
 
 export function Cart() {
   const dispatch = useAppDispatch()
   const items = useAppSelector(selectCartItems)
   const total = useAppSelector(selectCartTotal)
+  const { showNotification } = useNotification()
 
   const handleSubmitOrder = () => {
     if (items.length === 0) return
@@ -37,6 +39,7 @@ export function Cart() {
 
     dispatch(addOrder(order))
     dispatch(clearCart())
+    showNotification('Order submitted successfully!', 'success')
   }
 
   if (items.length === 0) {

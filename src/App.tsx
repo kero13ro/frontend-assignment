@@ -13,6 +13,7 @@ import { RestaurantMenu, ShoppingCart, History } from '@mui/icons-material'
 import { Menu } from './features/menu/Menu'
 import { Cart } from './features/cart/Cart'
 import { OrderHistory } from './features/history/OrderHistory'
+import { NotificationProvider } from './components/NotificationProvider'
 import { useAppSelector } from './store/hooks'
 import { selectCartItemCount } from './features/cart/cartSlice'
 
@@ -47,11 +48,13 @@ export function App() {
           <Tab icon={<History />} label="History" />
         </Tabs>
       </AppBar>
-      <Container maxWidth="md" sx={{ py: 3, flex: 1 }}>
-        {tab === 0 && <Menu />}
-        {tab === 1 && <Cart />}
-        {tab === 2 && <OrderHistory />}
-      </Container>
+      <NotificationProvider>
+        <Container maxWidth="md" sx={{ py: 3, flex: 1 }}>
+          {tab === 0 && <Menu />}
+          {tab === 1 && <Cart />}
+          {tab === 2 && <OrderHistory />}
+        </Container>
+      </NotificationProvider>
     </Box>
   )
 }

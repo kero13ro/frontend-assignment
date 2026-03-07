@@ -4,6 +4,7 @@ import { Provider } from 'react-redux'
 import { configureStore } from '@reduxjs/toolkit'
 import cartReducer from '../features/cart/cartSlice'
 import historyReducer from '../features/history/historySlice'
+import { NotificationProvider } from '../components/NotificationProvider'
 import type { RootState } from '../store'
 
 interface ExtendedRenderOptions extends Omit<RenderOptions, 'queries'> {
@@ -23,7 +24,11 @@ export function renderWithProviders(
   })
 
   function Wrapper({ children }: { children: React.ReactNode }) {
-    return <Provider store={store}>{children}</Provider>
+    return (
+      <Provider store={store}>
+        <NotificationProvider>{children}</NotificationProvider>
+      </Provider>
+    )
   }
 
   return { store, ...render(ui, { wrapper: Wrapper, ...renderOptions }) }

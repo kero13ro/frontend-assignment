@@ -10,13 +10,16 @@ import { Add } from '@mui/icons-material'
 import { menuItems, categories } from '../../data/menuItems'
 import { useAppDispatch } from '../../store/hooks'
 import { addToCart } from '../cart/cartSlice'
+import { useNotification } from '../../components/NotificationProvider'
 import type { MenuItem } from '../../types'
 
 export function Menu() {
   const dispatch = useAppDispatch()
+  const { showNotification } = useNotification()
 
   const handleAddToCart = (item: MenuItem) => {
     dispatch(addToCart(item))
+    showNotification(`Added ${item.name} to cart`, 'success')
   }
 
   return (
