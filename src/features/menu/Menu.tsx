@@ -22,7 +22,7 @@ interface MenuItemCardProps {
 
 const MenuItemCard = memo(function MenuItemCard({ item, inCart, onAddToCart }: MenuItemCardProps) {
   return (
-    <Card sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+    <Card sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, alignItems: { xs: 'flex-start', sm: 'center' }, justifyContent: 'space-between' }}>
       <CardContent>
         <Typography variant="h6">{item.name}</Typography>
         <Typography color="text.secondary">
