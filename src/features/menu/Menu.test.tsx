@@ -41,16 +41,29 @@ describe('Menu', () => {
     expect(state.cart.items[0].quantity).toBe(1)
   })
 
-  it('should increment quantity when adding same item twice', async () => {
+  it('should show In Cart chip after adding item', async () => {
     const user = userEvent.setup()
-    const { store } = renderWithProviders(<Menu />)
+    renderWithProviders(<Menu />)
 
     const buttons = screen.getAllByRole('button', { name: /add.*to cart/i })
     await user.click(buttons[0])
-    await user.click(buttons[0])
 
-    const state = store.getState()
-    expect(state.cart.items).toHaveLength(1)
-    expect(state.cart.items[0].quantity).toBe(2)
+    expect(screen.getByText('In Cart')).toBeInTheDocument()
+    expect(screen.getAllByRole('button', { name: /add.*to cart/i })).toHaveLength(8)
+  })
+
+  it('should show In Cart for items already in cart', () => {
+    renderWithProviders(<Menu />, {
+      preloadedState: {
+        cart: {
+          items: [
+            { menuItem: { id: 'ff-1', name: 'Classic Burger', price: 8.99, category: 'Fast Food' }, quantity: 1 },
+          ],
+        },
+      },
+    })
+
+    expect(screen.getByText('In Cart')).toBeInTheDocument()
+    expect(screen.getAllByRole('button', { name: /add.*to cart/i })).toHaveLength(8)
   })
 })
